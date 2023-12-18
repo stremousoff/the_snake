@@ -34,7 +34,8 @@ clock = pygame.time.Clock()
 
 
 # Тут опишите все классы игры
-...
+class GameObject:
+    pass
 
 
 def main():
