@@ -2,7 +2,6 @@ from random import randint
 
 import pygame
 
-
 # Инициализация PyGame
 pygame.init()
 
@@ -50,7 +49,6 @@ class GameObject:
         в дочерних классах. Этот метод должен определять, как объект будет
         отрисовываться на экране. По умолчанию — pass.
         """
-
         pass
 
 
@@ -69,16 +67,14 @@ class Apple(GameObject):
     def randomize_position():
         """Устанавливает случайное положение яблока на игровом поле."""
         return (
-                randint(0, GRID_WIDTH - 20) * GRID_SIZE,
-                randint(0, GRID_HEIGHT - 20) * GRID_SIZE
+            randint(0, GRID_WIDTH - 20) * GRID_SIZE,
+            randint(0, GRID_HEIGHT - 20) * GRID_SIZE
         )
 
     def draw(self, surface):
         """Отрисовывает яблоко на игровой поверхности."""
-        rect = pygame.Rect(
-            (self.position[0], self.position[1]),
-            (GRID_SIZE, GRID_SIZE)
-        )
+        rect = pygame.Rect((self.position[0], self.position[1]),
+                           (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(surface, self.body_color, rect)
         pygame.draw.rect(surface, (93, 216, 228), rect, 1)
 
@@ -87,6 +83,7 @@ class Snake(GameObject):
     """Класс унаследованный от GameObject, описывающий змейку
     и действия с ней.
     """
+
     def __init__(self):
         super().__init__()
         self.length = 1
@@ -161,7 +158,8 @@ class Snake(GameObject):
 
     def reset(self):
         """Сбрасывает змейку в начальное состояние после столкновения
-        с собой."""
+        с собой.
+        """
         self.length = 1
         self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
         self.direction = RIGHT
