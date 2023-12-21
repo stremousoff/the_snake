@@ -37,7 +37,8 @@ clock = pygame.time.Clock()
 # Тут опишите все классы игры
 class GameObject:
     """GameObject — это базовый класс, от которого наследуются другие игровые
-    объекты."""
+    объекты.
+    """
 
     def __init__(self):
         """Конструктор класса GameObject."""
@@ -47,14 +48,16 @@ class GameObject:
     def draw(self, surface):
         """Это абстрактный метод, который предназначен для переопределения
         в дочерних классах. Этот метод должен определять, как объект будет
-        отрисовываться на экране. По умолчанию — pass."""
+        отрисовываться на экране. По умолчанию — pass.
+        """
 
         pass
 
 
 class Apple(GameObject):
     """Класс унаследованный от GameObject, описывающий яблоко
-    и действия с ним."""
+    и действия с ним.
+    """
 
     def __init__(self):
         """Конструктор класса Apple."""
@@ -82,7 +85,8 @@ class Apple(GameObject):
 
 class Snake(GameObject):
     """Класс унаследованный от GameObject, описывающий змейку
-    и действия с ней."""
+    и действия с ней.
+    """
     def __init__(self):
         super().__init__()
         self.length = 1
@@ -101,7 +105,8 @@ class Snake(GameObject):
     def move(self):
         """Обновляет позицию змейки (координаты каждой секции),
         добавляя новую голову в начало списка positions и
-        удаляя последний элемент, если длина змейки не увеличилась."""
+        удаляя последний элемент, если длина змейки не увеличилась.
+        """
         head_position = self.get_head_position()
         x_point = head_position[0]
         y_point = head_position[1]
@@ -168,7 +173,8 @@ class Snake(GameObject):
 # Функция обработки действий пользователя
 def handle_keys(game_object):
     """Обрабатывает нажатия клавиш, чтобы изменить направление
-    движения змейки"""
+    движения змейки
+    """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
