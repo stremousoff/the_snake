@@ -154,15 +154,12 @@ class Snake(GameObject):
         """Сбрасывает змейку в начальное состояние после столкновения
         с собой.
         """
-        def __init__():
-            self.length = 1
-            self.positions = self.position
-            self.direction = RIGHT
-            self.next_direction = None
-            self.body_color = SNAKE_COLOR
-            self.last = None
-
-        __init__()
+        self.length = 1
+        self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
+        self.direction = RIGHT
+        self.next_direction = None
+        self.body_color = SNAKE_COLOR
+        self.last = None
 
 
 def handle_keys(game_object):
