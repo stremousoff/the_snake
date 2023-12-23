@@ -45,15 +45,16 @@ class GameObject:
         self.position = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
         self.body_color = None
 
-    @staticmethod
-    def draw(body_color, position):
+    def draw(self):
         """Это абстрактный метод, который предназначен для переопределения
         в дочерних классах. Этот метод должен определять, как объект будет
         отрисовываться на экране. По умолчанию — pass.
         """
-        rect = pygame.Rect((position[0], position[1]),
-                           (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(screen, body_color, rect)
+        rect = pygame.Rect(
+            (self.position[0], self.position[1]),
+            (GRID_SIZE, GRID_SIZE)
+        )
+        pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, OUTLINE_COLOR, rect, 1)
 
 
@@ -76,9 +77,9 @@ class Apple(GameObject):
             randint(0, GRID_HEIGHT - GRID_SIZE) * GRID_SIZE
         )
 
-    def draw(self, *args):
+    def draw(self):
         """Отрисовывает яблоко на игровой поверхности."""
-        super().draw(self.body_color, self.position)
+        super().draw()
 
 
 class Snake(GameObject):
@@ -88,12 +89,7 @@ class Snake(GameObject):
 
     def __init__(self):
         super().__init__()
-        self.length = 1
-        self.positions = self.position
-        self.direction = RIGHT
-        self.next_direction = None
-        self.body_color = SNAKE_COLOR
-        self.last = None
+        self.reset()
 
     def update_direction(self, next_direction):
         """Обновляет направление движения змейки."""
@@ -133,7 +129,8 @@ class Snake(GameObject):
     def draw(self, *args):
         """Отрисовывает змейку на экране, затирая след."""
         for position in self.positions[:-1]:
-            super().draw(self.body_color, position)
+            self.position = position
+            super().draw()
 
         # Отрисовка головы змейки
         head = self.positions[0]
@@ -157,12 +154,15 @@ class Snake(GameObject):
         """Сбрасывает змейку в начальное состояние после столкновения
         с собой.
         """
-        self.length = 1
-        self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
-        self.direction = RIGHT
-        self.next_direction = None
-        self.body_color = SNAKE_COLOR
-        self.last = None
+        def __init__():
+            self.length = 1
+            self.positions = self.position
+            self.direction = RIGHT
+            self.next_direction = None
+            self.body_color = SNAKE_COLOR
+            self.last = None
+
+        __init__()
 
 
 def handle_keys(game_object):
