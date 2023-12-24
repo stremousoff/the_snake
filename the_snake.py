@@ -47,6 +47,7 @@ class GameObject:
 
     @staticmethod
     def create_rectangle(position):
+        """Создаёт прямоугольник объекта."""
         return pygame.Rect(
             (position[0], position[1]),
             (GRID_SIZE, GRID_SIZE)
