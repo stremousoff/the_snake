@@ -46,21 +46,21 @@ class GameObject:
         self.body_color = None
 
     @staticmethod
-    def create_rectangle(position):
-        """Создаёт прямоугольник объекта."""
-        return pygame.Rect(
-            (position[0], position[1]),
-            (GRID_SIZE, GRID_SIZE)
-        )
+    def draw_rect(position, body_color):
+        """Рисует прямоугольный объект."""
+        rect = pygame.Rect((position[0], position[1]),
+                           (GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(screen, body_color, rect)
+        pygame.draw.rect(screen, OUTLINE_COLOR, rect, 1)
 
     def draw(self):
         """Это абстрактный метод, который предназначен для переопределения
         в дочерних классах. Этот метод должен определять, как объект будет
         отрисовываться на экране. По умолчанию — pass.
         """
-        rect = self.create_rectangle(self.position)
-        pygame.draw.rect(screen, self.body_color, rect)
-        pygame.draw.rect(screen, OUTLINE_COLOR, rect, 1)
+        raise NotImplementedError(
+            f'Определите draw в {self.__class__.__name__}.'
+        )
 
 
 class Apple(GameObject):
@@ -84,7 +84,7 @@ class Apple(GameObject):
 
     def draw(self):
         """Отрисовывает яблоко на игровой поверхности."""
-        super().draw()
+        self.draw_rect(self.position, self.body_color)
 
 
 class Snake(GameObject):
@@ -94,11 +94,6 @@ class Snake(GameObject):
 
     def __init__(self):
         super().__init__()
-        self.length = None
-        self.positions = None
-        self.direction = None
-        self.next_direction = None
-        self.last = None
         self.reset()
 
     def update_direction(self, next_direction):
@@ -135,17 +130,14 @@ class Snake(GameObject):
             self.positions.insert(0, (x_point, y_point + GRID_SIZE))
         self.last = self.positions.pop()
 
-    def draw(self, *args):
+    def draw(self):
         """Отрисовывает змейку на экране, затирая след."""
         for position in self.positions[:-1]:
-            self.position = position
-            super().draw()
+            self.draw_rect(position, self.body_color)
 
         # Отрисовка головы змейки
         head = self.get_head_position()
-        head_rect = super().create_rectangle(head)
-        pygame.draw.rect(screen, self.body_color, head_rect)
-        pygame.draw.rect(screen, OUTLINE_COLOR, head_rect, 1)
+        self.draw_rect(head, self.body_color)
 
         # Затирание последнего сегмента
         if self.last:
@@ -169,6 +161,10 @@ class Snake(GameObject):
         self.next_direction = None
         self.body_color = SNAKE_COLOR
         self.last = None
+
+    def snake_position(self):
+        """Возвращает координаты змеи без учёта головы."""
+        return self.positions[1:]
 
 
 def handle_keys(game_object):
@@ -204,7 +200,7 @@ def main():
         if snake.get_head_position() == apple.position:
             snake.positions.append(snake.last)
             apple = Apple()
-        elif snake.get_head_position() in snake.positions[1:]:
+        elif snake.get_head_position() in snake.snake_position():
             screen.fill(BOARD_BACKGROUND_COLOR)
             snake.reset()
 
